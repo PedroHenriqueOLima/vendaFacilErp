@@ -82,3 +82,40 @@
     border-radius: 5px;
 
 }
+
+#searchItem {
+    
+    width: 75%;
+    margin: 40px auto;
+    height: 48px;
+    border: 0.5px solid #F2C94C;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 20px;
+}
+
+#modal-products {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    top: 40px;
+    left: auto;
+    right: auto;
+    width: 80%;
+    height: 75%;
+    border: 0.5px solid #eee;
+    border-radius: 5px;
+    overflow: auto;
+    background-color: rgb(46,132,144);
+    background-color: rgba(0,0,255,0.5);
+}
+
+#modal-products-title {
+    text-align: center;
+    font-size: 20px;
+}
+
+#modal-title h5 {
+    margin: 5px;
+}
+
