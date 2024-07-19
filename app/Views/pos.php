@@ -16,8 +16,8 @@
             </div>
 
             <ul id="nav-links">
-            <li><a href="#" id="btn-panel">Painel Do Administrador</a></li>
-            <li><a href="./sale" id="btn-close-system">Sair do Sistema</a></li>
+            <li><a href="/painel-administrador/login" id="btn-panel">Painel Do Administrador</a></li>
+            <li><a href="/painel-administrador/login" id="btn-close-system">Sair do Sistema</a></li>
             </ul>
         </nav>
 
