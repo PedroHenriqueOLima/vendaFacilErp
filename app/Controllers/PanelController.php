@@ -19,7 +19,7 @@ class PanelController extends BaseController
         if ($this->request->getMethod() == 'post') {
             $adminPassInput = $this->request->getPost('admin-password');
             $adminPass = getenv('ADMIN_PASSWORD');
-            if ($adminPassInput === $adminPass) {
+            if ($adminPassInput == $adminPass) {
                 return $this->response->setJSON(['status' => 'ok']);
             } else {
                 return $this->response->setJSON(['status' => 'error']);
@@ -27,5 +27,12 @@ class PanelController extends BaseController
         }
 
     
+    }
+
+
+    public function logout() {
+
+        return redirect()->to('/pdv');
+        
     }
 }
