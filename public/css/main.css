@@ -1,0 +1,31 @@
+@font-face {
+  font-family: "Nunito";
+  src: url("/fonts/static/NunitoSans_10pt-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("/fonts/static/NunitoSans_10pt-Regular.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+body {
+  font-family: "Nunito", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Nunito", sans-serif;
+  font-weight: bold;
+}
+
+p {
+  font-family: "Nunito", sans-serif;
+}
