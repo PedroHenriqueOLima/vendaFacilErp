@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="./css/pos.css">
     <title>Venda Fácil - PDV</title>
 </head>
+
 <body>
     <div id="container">
         <nav id="navbar">
@@ -16,8 +18,8 @@
             </div>
 
             <ul id="nav-links">
-            <li><a href="/painel-administrador/login" id="btn-panel">Painel Do Administrador</a></li>
-            <li><a href="/painel-administrador/login" id="btn-close-system">Sair do Sistema</a></li>
+                <li><a href="/painel-administrador/login" id="btn-panel">Painel Do Administrador</a></li>
+                <li><a href="/painel-administrador/login" id="btn-close-system">Sair do Sistema</a></li>
             </ul>
         </nav>
 
@@ -37,47 +39,74 @@
         </div>
 
 
-        <!-- Lista de itens da venda -->
+        <main id="app">
+            <div id="left-container">
+                <!-- Botões de ação -->
+                <button id="query-btn">
+                    Consultar Item
+                </button>
 
+                <button id="add-product-btn">
+                    Cadastrar Produto
+                </button>
 
-        <div id="products-list">
-            <table>
-                <thead id="products-list-header">
-                    <tr>
-                        <th id="product-number">Nº</th>
-                        <th id="product-name">Item</th>
-                        <th id="product-quantity">Quantidade</th>
-                        <th id="product-price">Valor Unitário</th>
-                        <th id="product-total">Valor Total</th>
-                        <th id="product-action">Ação</th>
-                    </tr>
-                </thead>
-                <tbody id="product-list-body">
-                    <!-- Lista de produtos da venda será inserida aqui -->
-                </tbody>
+                <button id="add-service-btn">
+                    Cadastrar Serviço
+                </button>
 
-            </table>
-        </div>
+                <button id="add-client-btn">
+                    Cadastrar Cliente
+                </button>
 
-        <!-- Informações da venda -->
-
-        <div id="row-footer">
-            <button id="cancel-btn">Cancelar Venda</button>
-            <div id="total-items">
-                <h3>Total de Itens</h3>
-                <p id="total-items-value">0</p>
+                <button id="add-receivable-btn">Contas a Receber</button>
             </div>
-            <div id="total-price">
-                <h3>Total</h3>
-                <p id="total-price-value">R$ 0,00</p>
+            <!-- Container de itens da esquerda -->
+
+            <!-- Container de itens da direita -->
+
+            <div id="right-container">
+
+
+                <!-- Lista de itens da venda -->
+                <div id="products-list">
+                    <table>
+                        <thead id="products-list-header">
+                            <tr>
+                                <th id="product-number">Nº</th>
+                                <th id="product-name">Item</th>
+                                <th id="product-quantity">Quantidade</th>
+                                <th id="product-price">Valor Unitário</th>
+                                <th id="product-total">Valor Total</th>
+                                <th id="product-action">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-list-body">
+                            <!-- Lista de produtos da venda será inserida aqui -->
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <!-- Informações da venda -->
+
+                <div id="row-footer">
+                    <button id="cancel-btn">Cancelar Venda</button>
+                    <div id="total-items">
+                        <h3>Total de Itens</h3>
+                        <p id="total-items-value">0</p>
+                    </div>
+                    <div id="total-price">
+                        <h3>Total</h3>
+                        <p id="total-price-value">R$ 0,00</p>
+                    </div>
+
+
+                    <button id="confirm-btn">Finalizar Venda</button>
+                </div>
             </div>
+        </main>
 
-            
-            <button id="confirm-btn">Finalizar Venda</button>
-        </div>
-
-
-
-    <script src="./js/pos.js"></script>
+        <script src="./js/pos.js"></script>
 </body>
+
 </html>
