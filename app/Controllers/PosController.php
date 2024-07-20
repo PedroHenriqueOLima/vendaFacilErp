@@ -13,7 +13,7 @@ class PosController extends BaseController
 
     public function searchItem()
     {
-        $query = $this->request->getVar('query');;
+        $query = $this->request->getJSON(true)['query'];
         
         $db = Database::connect();
 
@@ -22,6 +22,7 @@ class PosController extends BaseController
         $builderServices = $db->table('services');
 
         $builderProducts->like('name', $query);
+        $builderProducts->orLike('barcode', $query);
         $builderServices->like('name', $query);
 
         $products = $builderProducts->get()->getResult();
@@ -30,9 +31,9 @@ class PosController extends BaseController
         $combinedResults = array_merge($products, $services);
 
         if (count($combinedResults) > 0) {
-            return $this->response->setJSON(['message' => 'success', 'data' => $combinedResults]);
+            return $this->response->setJSON(['ok', 'data' => $combinedResults]);
         } else {
-            return $this->response->setJSON(['message' => 'error', 'data' => 'Produto ou Serviço não encontrado!']); 
+            return $this->response->setJSON(['error', 'message' => 'Produto ou Serviço não encontrado!']); 
         }
 
     }
