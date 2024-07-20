@@ -37,7 +37,47 @@
         </div>
 
 
-    </div>
+        <!-- Lista de itens da venda -->
+
+
+        <div id="products-list">
+            <table>
+                <thead id="products-list-header">
+                    <tr>
+                        <th id="product-number">Nº</th>
+                        <th id="product-name">Item</th>
+                        <th id="product-quantity">Quantidade</th>
+                        <th id="product-price">Valor Unitário</th>
+                        <th id="product-total">Valor Total</th>
+                        <th id="product-action">Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="product-list-body">
+                    <!-- Lista de produtos da venda será inserida aqui -->
+                </tbody>
+
+            </table>
+        </div>
+
+        <!-- Informações da venda -->
+
+        <div id="row-footer">
+            <button id="cancel-btn">Cancelar Venda</button>
+            <div id="total-items">
+                <h3>Total de Itens</h3>
+                <p id="total-items-value">0</p>
+            </div>
+            <div id="total-price">
+                <h3>Total</h3>
+                <p id="total-price-value">R$ 0,00</p>
+            </div>
+
+            
+            <button id="finish-btn">Finalizar Venda</button>
+        </div>
+
+
+
     <script src="./js/pos.js"></script>
 </body>
 </html>
