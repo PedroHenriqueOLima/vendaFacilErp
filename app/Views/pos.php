@@ -73,7 +73,7 @@
             </div>
 
             
-            <button id="finish-btn">Finalizar Venda</button>
+            <button id="confirm-btn">Finalizar Venda</button>
         </div>
 
 

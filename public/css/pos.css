@@ -225,7 +225,7 @@
     flex-direction: column;
     justify-content: center;
     border-radius: 5px;
-    background-color: #40B98C;
+    background-color: #4083B9;
 
 }
 #total-price p {
@@ -236,3 +236,17 @@
     margin: 0;
 }
 
+#cancel-btn {
+    background-color: #B9404A;
+    color: #fff;
+}
+
+#cancel-btn:hover {
+    background-color: #B9404b;
+    color: black;
+}
+
+#confirm-btn {
+    background-color: #40B98C;
+    color: #fff;
+}
