@@ -59,6 +59,12 @@
                 </button>
 
                 <button id="add-receivable-btn">Contas a Receber</button>
+
+
+                <button id="list-sales-btn">
+                    Listar Vendas
+                </button>
+
             </div>
             <!-- Container de itens da esquerda -->
 
