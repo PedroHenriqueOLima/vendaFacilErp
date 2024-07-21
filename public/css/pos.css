@@ -128,6 +128,15 @@
     margin: 10px;
 }
 
+#btn-close-modal-products {
+    background-color: #B9404A;
+    padding: 12px 15px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+}
+
 #app {
     display: grid;
     grid-template-columns: 0.8fr 3fr;

@@ -87,8 +87,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function addProductsToModal(products) {
     modalProducts.style.display = "block";
-    modalBody.innerHTML = "";
-    modalProductsList.innerHTML = "";
+
+    products.forEach((product) => {
+      
+    });
     
   }
 
