@@ -36,6 +36,7 @@
                     <!-- Lista de produtos será inserida aqui -->
                 </ul>
             </div>
+            <button id="close-modal-products">Fechar</button>
         </div>
 
 

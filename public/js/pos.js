@@ -4,11 +4,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalProductsList = document.getElementById("modal-products-list");
   const searchItem = document.getElementById("searchItem");
   const btnCloseSystem = document.getElementById("btn-close-system");
-
-
+  const btnCloseModal = document.getElementById("btn-close-modal");
   btnCloseSystem.addEventListener("click", () => {
     closeSystem();
-  })
+  });
 
   searchItem.addEventListener("keyup", (event) => {
     const query = event.target.value;
@@ -44,6 +43,11 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
+  // Fechando o modal 
+
+  btnCloseModal.addEventListener("click", () => {
+  });
+
   // Função de busca pelo nome
   function searchByName(query) {
     fetch("/pdv/pesquisar-produto", {
@@ -68,7 +72,8 @@ document.addEventListener("DOMContentLoaded", function () {
           })
             .then((response) => {
               if (response.ok) {
-                showProductsModal();
+                product = response.json();
+                displayProductsInModal(product);
               }
             })
             .catch((error) => {
@@ -87,19 +92,26 @@ document.addEventListener("DOMContentLoaded", function () {
     return regex.test(query);
   };
 
-  // Função para mostrar modal com produtos ao pesquisar pela descrição
-
-  function showProductsModal() {
-    modalProducts.style.display = "block";
-  }
-
   // Função para adicionar produtos a lista de produtos
 
-  function addProductToList(product) {
-    alert(product);
+  function displayProductsInModal(product) {
+
+    modalProducts.style.display = "block";
+    modalBody.innerHTML = "";
+    modalProductsList.innerHTML = "";
+
+    for (let i = 0; i < product.length; i++) {
+      const li = document.createElement("li");
+      const barcode = document.createElement("p");
+      const name = document.createElement("p");
+      const quantity = document.createElement("p");
+      const price = document.createElement("p");
+    }
+
   }
 
   function closeSystem() {
     window.location.href = "/login";
   }
+
 });
