@@ -3,6 +3,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalBody = document.getElementById("modal-body");
   const modalProductsList = document.getElementById("modal-products-list");
   const searchItem = document.getElementById("searchItem");
+  const btnCloseSystem = document.getElementById("btn-close-system");
+
+
+  btnCloseSystem.addEventListener("click", () => {
+    closeSystem();
+  })
 
   searchItem.addEventListener("keyup", (event) => {
     const query = event.target.value;
@@ -91,5 +97,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function addProductToList(product) {
     alert(product);
+  }
+
+  function closeSystem() {
+    window.location.href = "/login";
   }
 });

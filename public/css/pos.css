@@ -45,18 +45,24 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
 }
 
-#nav-links a {
+#nav-links  a{
     text-decoration: none;
     color: #fff;
     font-weight: bold;
+}
+
+#nav-links a:hover {
+    color: #000;
 }
 
 #btn-panel {
     background-color: #F2C94C;
     padding: 10px;
     border-radius: 5px;
+
 }
 
 
@@ -70,8 +76,11 @@
 
 #btn-close-system {
     background-color: #B9404A;
-    padding: 10px;
+    padding: 12px 15px;
     border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    border: none;
 }
 
 #btn-close-system:hover {
@@ -85,7 +94,7 @@
 
 #searchItem {
     
-    width: 1024px;
+    width: 90%;
     margin: 30px auto;
     height: 36px;
     border: 0.5px solid #F2C94C;
@@ -101,7 +110,7 @@
     top: 40px;
     left: auto;
     right: auto;
-    width: 1200px;
+    width: 95%;
     height: 100%;
     border: 0.5px solid #eee;
     border-radius: 5px;
@@ -123,7 +132,7 @@
     display: grid;
     grid-template-columns: 0.8fr 3fr;
     gap: 20px;
-    width: 1024px;
+    width: 90%;
     height: 100%;
     margin: auto;
 }

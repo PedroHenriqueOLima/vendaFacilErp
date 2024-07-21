@@ -19,7 +19,7 @@
 
             <ul id="nav-links">
                 <li><a href="/painel-administrador/login" id="btn-panel">Painel Do Administrador</a></li>
-                <li><a href="/painel-administrador/login" id="btn-close-system">Sair do Sistema</a></li>
+                <li><button id="btn-close-system">Sair do Sistema</button></li>
             </ul>
         </nav>
 
