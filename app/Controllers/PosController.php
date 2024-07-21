@@ -31,9 +31,9 @@ class PosController extends BaseController
         $combinedResults = array_merge($products, $services);
 
         if (count($combinedResults) > 0) {
-            return $this->response->setJSON(['ok', 'data' => $combinedResults]);
+            return $this->response->setJSON(['status' => 'ok', 'data' => $combinedResults]);
         } else {
-            return $this->response->setJSON(['error', 'message' => 'Produto ou Serviço não encontrado!']); 
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Produto ou Serviço não encontrado!']); 
         }
 
     }

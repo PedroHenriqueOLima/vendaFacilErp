@@ -32,9 +32,9 @@
         <div id="modal-products">
             <h5 id="modal-products-title">Selecione o Produto</h5>
             <div id="modal-products-body">
-                <ul id="modal-product-list">
-                    <!-- Lista de produtos será inserida aqui -->
-                </ul>
+                <div id="modal-products-list">
+                       <!-- Tabela de produtos será inserida aqui -->
+                </div>
             </div>
             <button id="btn-close-modal-products">Fechar</button>
         </div>
