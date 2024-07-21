@@ -25,7 +25,7 @@
 
         <!-- Campo de pesquisa de itens -->
 
-        <input type="text" id="searchItem" placeholder="Insira o código de barras do item ou digite o nome do item">
+        <input type="text" id="search-item" placeholder="Insira o código de barras do item ou digite o nome do item">
 
 
         <!-- Modal para lista de produtos -->
@@ -36,7 +36,7 @@
                     <!-- Lista de produtos será inserida aqui -->
                 </ul>
             </div>
-            <button id="close-modal-products">Fechar</button>
+            <button id="btn-close-modal-products">Fechar</button>
         </div>
 
 
