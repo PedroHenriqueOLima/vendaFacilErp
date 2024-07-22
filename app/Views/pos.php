@@ -30,13 +30,17 @@
 
         <!-- Modal para lista de produtos -->
         <div id="modal-products">
-            <h5 id="modal-products-title">Selecione o Produto</h5>
+            <div id="modal-products-header">
+                <h5 id="modal-products-title">Selecione o Produto</h5>
+                <button id="btn-close-modal-products">Fechar</button>
+            </div>
+
             <div id="modal-products-body">
                 <div id="modal-products-list">
-                       <!-- Tabela de produtos será inserida aqui -->
+                    <!-- Tabela de produtos será inserida aqui -->
                 </div>
             </div>
-            <button id="btn-close-modal-products">Fechar</button>
+
         </div>
 
 

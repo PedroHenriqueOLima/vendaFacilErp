@@ -4,9 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalProductsList = document.getElementById("modal-products-list");
   const searchItem = document.getElementById("search-item");
   const btnCloseSystem = document.getElementById("btn-close-system");
-  const btnCloseModalProducts = document.getElementById(
-    "btn-close-modal-products"
-  );
+  const btnCloseModalProducts = document.getElementById("btn-close-modal-products");
+
   let productsList = document.getElementById("products-list");
 
   btnCloseSystem.addEventListener("click", () => {

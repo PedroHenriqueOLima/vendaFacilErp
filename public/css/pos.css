@@ -103,7 +103,7 @@
   left: auto;
   right: auto;
   width: 70%;
-  height: 100%;
+  height: 90%;
   border: 0.5px solid #eee;
   border-radius: 10px;
   overflow: auto;
@@ -139,9 +139,19 @@
   padding: 10px 20px;   
 }
 
+#modal-products-header {
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+
+}
 #modal-products-title {
   text-align: center;
   font-size: 20px;
+  display: inline-block;
 }
 
 #modal-products-title {
