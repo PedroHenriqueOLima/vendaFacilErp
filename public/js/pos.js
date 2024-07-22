@@ -200,18 +200,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const totalCell = document.createElement("td");
     totalCell.textContent = `R$ ${(product.price * quantity).toFixed(2)}`;
 
-    const action = document.createElement("td");
+    const actionCell = document.createElement("td");
 
-    const button = document.createElement("button");
-    button.textContent = "Remover";
-    button.addEventListener("click", () => {
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "Remover";
+    removeButton.classList.add("btn", "btn-remove-product");
+
+    removeButton.addEventListener("click", () => {
       removeProductFromSale(row);
     });
+    actionCell.appendChild(removeButton);
 
-    action.appendChild(button);
+    row.appendChild(orderNumber);
+    row.appendChild(nameCell);
     row.appendChild(quantityCell);
     row.appendChild(priceCell);
     row.appendChild(totalCell);
+    row.appendChild(actionCell);
 
     productsSaleList.appendChild(row);
   }

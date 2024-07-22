@@ -275,6 +275,15 @@
   text-align: center;
 }
 
+.btn-remove-product {
+  background-color: #b9404a;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+}
+
 #row-footer {
   display: flex;
   flex-direction: row;
