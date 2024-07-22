@@ -208,6 +208,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     removeButton.addEventListener("click", () => {
       removeProductFromSale(row);
+      totalItems -= 1;
+      orderNumber.textContent = orderNumber - 1;
     });
     actionCell.appendChild(removeButton);
 
