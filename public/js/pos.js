@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnCloseModalProducts = document.getElementById(
     "btn-close-modal-products"
   );
+  let productsList = document.getElementById("products-list");
 
   btnCloseSystem.addEventListener("click", () => {
     closeSystem();
@@ -118,6 +119,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const priceHeader = document.createElement("th");
     priceHeader.textContent = "Preço";
     headerRow.appendChild(priceHeader);
+
+    const buttonHeader = document.createElement("th");
+    buttonHeader.textContent = "Adicionar a Venda";
+    headerRow.appendChild(buttonHeader);
   
     thead.appendChild(headerRow);
     table.appendChild(thead);
@@ -140,13 +145,31 @@ document.addEventListener("DOMContentLoaded", function () {
       priceCell.textContent = `R$ ${product.price}`;
       row.appendChild(priceCell);
   
+      const buttonCell = document.createElement("td");
+      const button = document.createElement("button");
+      button.textContent = "Incluir na Venda";
+      button.addEventListener("click", () => {
+        addProductToSale(product);
+      });
+      buttonCell.appendChild(button);
+      row.appendChild(buttonCell);
+
       tbody.appendChild(row);
+
     });
   
     table.appendChild(tbody);
     modalProductsList.appendChild(table);
   }
   
+
+  // Função para adicionar produtos a lista de vendas	
+
+  function addProductToSale(product) {
+    const productElement = document.createElement("li");
+    productElement.textContent = `${product.name} - R$ ${product.price}`;
+    productsList.appendChild(productElement);
+  }
 
   function closeSystem() {
     window.location.href = "/login";

@@ -102,10 +102,10 @@
   top: 40px;
   left: auto;
   right: auto;
-  width: 95%;
+  width: 70%;
   height: 100%;
   border: 0.5px solid #eee;
-  border-radius: 5px;
+  border-radius: 10px;
   overflow: auto;
   background-color: rgb(46, 132, 144);
   background-color: rgba(0, 0, 255, 0.9);
@@ -123,11 +123,20 @@
   text-align: left;
   color: #fff;
   font-weight: bold;
-  
 }
 
 #product-table th {
   background-color: rgb(46, 132, 144);
+}
+
+#product-table button {
+  background-color: #f2c94c;
+  border: 0.5px solid #f2c94c;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 10px 20px;   
 }
 
 #modal-products-title {
@@ -248,6 +257,7 @@
 #products-list #product-price {
   width: 15%;
 }
+
 
 #row-footer {
   display: flex;
