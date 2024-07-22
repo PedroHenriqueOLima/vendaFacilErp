@@ -85,7 +85,7 @@
                                 <th id="product-action">Ação</th>
                             </tr>
                         </thead>
-                        <tbody id="product-list-body">
+                        <tbody id="products-list-body">
                             <!-- Lista de produtos da venda será inserida aqui -->
                         </tbody>
 

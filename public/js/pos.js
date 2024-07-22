@@ -5,8 +5,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchItem = document.getElementById("search-item");
   const btnCloseSystem = document.getElementById("btn-close-system");
   const btnCloseModalProducts = document.getElementById("btn-close-modal-products");
+  let productsSaleList = document.getElementById("products-list-body");
 
-  let productsList = document.getElementById("products-list");
+  // Variavel de contagem dos items
+
+  let totalItems = 0;
 
   btnCloseSystem.addEventListener("click", () => {
     closeSystem();
@@ -149,6 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
       button.textContent = "Incluir na Venda";
       button.addEventListener("click", () => {
         addProductToSale(product);
+        modalProducts.style.display = "none";
       });
       buttonCell.appendChild(button);
       row.appendChild(buttonCell);
@@ -165,11 +169,59 @@ document.addEventListener("DOMContentLoaded", function () {
   // Função para adicionar produtos a lista de vendas	
 
   function addProductToSale(product) {
-    const productElement = document.createElement("li");
-    productElement.textContent = `${product.name} - R$ ${product.price}`;
-    productsList.appendChild(productElement);
+
+    // Definindo a quantidade como um item por padrão
+
+    let quantity = 1;
+
+    // Adicionando + 1 a quantidade de items da venda
+
+    // Registrando cada produto em uma linha
+
+
+    totalItems += 1;
+    const row = document.createElement("tr");
+
+    let orderNumber = document.createElement("td");
+    orderNumber.textContent = totalItems;
+    row.appendChild(orderNumber);
+
+    const nameCell = document.createElement("td");
+    nameCell.textContent = product.name;
+    row.appendChild(nameCell);
+
+
+    const quantityCell = document.createElement("td");
+    quantityCell.textContent = quantity;
+
+    const priceCell = document.createElement("td");
+    priceCell.textContent = `R$ ${product.price}`;
+
+    const totalCell = document.createElement("td");
+    totalCell.textContent = `R$ ${(product.price * quantity).toFixed(2)}`;
+
+    const action = document.createElement("td");
+
+    const button = document.createElement("button");
+    button.textContent = "Remover";
+    button.addEventListener("click", () => {
+      removeProductFromSale(row);
+    });
+
+    action.appendChild(button);
+    row.appendChild(quantityCell);
+    row.appendChild(priceCell);
+    row.appendChild(totalCell);
+
+    productsSaleList.appendChild(row);
   }
 
+  // Função para remover produtos da lista de vendas
+
+  function removeProductFromSale(row) {
+    const parent = row.parentNode;
+    parent.removeChild(row);
+  }
   function closeSystem() {
     window.location.href = "/login";
   }

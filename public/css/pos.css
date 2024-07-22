@@ -226,6 +226,8 @@
   overflow: auto;
   border-radius: 5px;
   background-color: #eee;
+  color: #000;
+  font-size: 20px;
 }
 
 #products-list::-webkit-scrollbar {
@@ -268,6 +270,10 @@
   width: 15%;
 }
 
+#products-list-body {
+  width: 100%;
+  text-align: center;
+}
 
 #row-footer {
   display: flex;
