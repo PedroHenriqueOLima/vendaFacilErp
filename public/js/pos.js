@@ -4,12 +4,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalProductsList = document.getElementById("modal-products-list");
   const searchItem = document.getElementById("search-item");
   const btnCloseSystem = document.getElementById("btn-close-system");
-  const btnCloseModalProducts = document.getElementById("btn-close-modal-products");
+  const btnCloseModalProducts = document.getElementById(
+    "btn-close-modal-products"
+  );
   let productsSaleList = document.getElementById("products-list-body");
 
   // Variavel de contagem dos items
 
   let totalItems = 0;
+
+  let debounceTimeout;
 
   btnCloseSystem.addEventListener("click", () => {
     closeSystem();
@@ -17,11 +21,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   searchItem.addEventListener("keyup", (event) => {
     const query = event.target.value;
-    if (isBarcode(query.trim())) {
-      searchByCode(query);
-    } else {
-      searchByName(query);
-    }
+
+    // Limpa o timeout anterior
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => {
+      if (isNumeric(query.trim())) {
+        if (isBarcode(query)) {
+          searchByCode(query);
+        } else {
+          alert("Por favor, insira um código de barras de 13 dígitos.");
+        }
+      } else if (query.trim() === "") {
+        alert("Por favor, insira um nome ou um código de barras.");
+      } else {
+        searchByName(query);
+      }
+    }, 1200); // 500ms de atraso
 
     event.preventDefault();
   });
@@ -39,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => {
         if (response.ok) {
           product = response.json();
-          addProductToList(product);
+          addProductToSale(product);
         } else {
           alert("Nenhum item encontrado, com este código de barras.");
         }
@@ -96,28 +111,34 @@ document.addEventListener("DOMContentLoaded", function () {
     return /^\d{13}$/.test(query);
   }
 
+  // Função para verificar se a entrada é um número
+
+  function isNumeric(input) {
+    return /^\d+$/.test(input);
+  }
+
   // Função para adicionar produtos a lista de produtos
 
   function addProductsToModal(products) {
     modalProducts.style.display = "block";
     modalProductsList.innerHTML = "";
-  
+
     // Create table and its elements
     const table = document.createElement("table");
     table.id = "product-table";
-  
+
     // Create table header
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
-  
+
     const nameHeader = document.createElement("th");
     nameHeader.textContent = "Nome";
     headerRow.appendChild(nameHeader);
-  
+
     const quantityHeader = document.createElement("th");
     quantityHeader.textContent = "Estoque";
     headerRow.appendChild(quantityHeader);
-  
+
     const priceHeader = document.createElement("th");
     priceHeader.textContent = "Preço";
     headerRow.appendChild(priceHeader);
@@ -125,28 +146,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const buttonHeader = document.createElement("th");
     buttonHeader.textContent = "Adicionar a Venda";
     headerRow.appendChild(buttonHeader);
-  
+
     thead.appendChild(headerRow);
     table.appendChild(thead);
-  
+
     // Create table body
     const tbody = document.createElement("tbody");
-  
+
     products.forEach((product) => {
       const row = document.createElement("tr");
-  
+
       const nameCell = document.createElement("td");
       nameCell.textContent = product.name;
       row.appendChild(nameCell);
-  
+
       const quantityCell = document.createElement("td");
       quantityCell.textContent = product.quantity;
       row.appendChild(quantityCell);
-  
+
       const priceCell = document.createElement("td");
       priceCell.textContent = `R$ ${product.price}`;
       row.appendChild(priceCell);
-  
+
       const buttonCell = document.createElement("td");
       const button = document.createElement("button");
       button.textContent = "Incluir na Venda";
@@ -158,18 +179,15 @@ document.addEventListener("DOMContentLoaded", function () {
       row.appendChild(buttonCell);
 
       tbody.appendChild(row);
-
     });
-  
+
     table.appendChild(tbody);
     modalProductsList.appendChild(table);
   }
-  
 
-  // Função para adicionar produtos a lista de vendas	
+  // Função para adicionar produtos a lista de vendas
 
   function addProductToSale(product) {
-
     // Definindo a quantidade como um item por padrão
 
     let quantity = 1;
@@ -177,7 +195,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Adicionando + 1 a quantidade de items da venda
 
     // Registrando cada produto em uma linha
-
 
     totalItems += 1;
     const row = document.createElement("tr");
@@ -189,7 +206,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const nameCell = document.createElement("td");
     nameCell.textContent = product.name;
     row.appendChild(nameCell);
-
 
     const quantityCell = document.createElement("td");
     quantityCell.textContent = quantity;

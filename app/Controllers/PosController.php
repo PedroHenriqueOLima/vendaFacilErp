@@ -21,8 +21,7 @@ class PosController extends BaseController
 
         $builderServices = $db->table('services');
 
-        $builderProducts->like('name', $query);
-        $builderProducts->orLike('barcode', $query);
+        $builderProducts->like('name', $query)->orLike('barcode', $query);
         $builderServices->like('name', $query);
 
         $products = $builderProducts->get()->getResult();
