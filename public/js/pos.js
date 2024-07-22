@@ -53,8 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then((response) => {
         if (response.ok) {
-          product = response.json();
-          addProductToSale(product);
+          console.log(response.json);
         } else {
           alert("Nenhum item encontrado, com este código de barras.");
         }

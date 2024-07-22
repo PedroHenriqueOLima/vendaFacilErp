@@ -15,25 +15,43 @@ class PosController extends BaseController
     {
         $query = $this->request->getJSON(true)['query'];
         
+        if (is_numeric($query)) {
+            $products = $this->searchItemByCode($query);
+        } else {
+            $products = $this->searchItemByName($query);
+        }
+
+    }
+
+    private function searchItemByCode($query) {
         $db = Database::connect();
 
-        $builderProducts = $db->table('products');
+        $productsBuilder = $db->table('products');
 
-        $builderServices = $db->table('services');
+        $productsBuilder->where('barcode', $query);
 
-        $builderProducts->like('name', $query)->orLike('barcode', $query);
-        $builderServices->like('name', $query);
+        $products = $productsBuilder->get();
 
-        $products = $builderProducts->get()->getResult();
-        $services = $builderServices->get()->getResult();
+        return $products;
+    }
 
-        $combinedResults = array_merge($products, $services);
+    private function searchItemByName($query) {
 
-        if (count($combinedResults) > 0) {
-            return $this->response->setJSON(['status' => 'ok', 'data' => $combinedResults]);
-        } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Produto ou Serviço não encontrado!']); 
-        }
+        $db = Database::connect();
+
+        $productsBuilder = $db->table('products');
+        $servicesBuilder = $db->table('services');
+
+        $productsBuilder->like('name', $query);
+        $servicesBuilder->like('name', $query);
+
+        $products = $productsBuilder->get();
+        $services = $servicesBuilder->get();
+
+        $results = array_merge($products, $services);
+
+        return $results;
+
 
     }
 }
