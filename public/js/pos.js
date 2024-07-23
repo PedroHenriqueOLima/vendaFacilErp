@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalProductsList = document.getElementById("modal-products-list");
   const queryItemBtn = document.getElementById("query-btn");
   const searchItem = document.getElementById("search-item");
+  const queryItemInput = document.getElementById("query-item-input");
   const btnCloseSystem = document.getElementById("btn-close-system");
   const btnCloseModalProducts = document.getElementById(
     "btn-close-modal-products"
@@ -19,7 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
   btnCloseSystem.addEventListener("click", closeSystem);
   btnCloseModalProducts.addEventListener("click", closeModalProducts);
   searchItem.addEventListener("input", handleSearchInput);
-  queryItemBtn.addEventListener('click', () =>{ queryItem(); });
+  queryItemBtn.addEventListener("click", () => {
+    queryItem();
+  });
 
   // Funções
   function handleSearchInput(event) {
@@ -109,7 +112,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function queryItem() {
     modalQueryItems.style.display = "block";
+ 
+    const query = queryItemInput.value.trim();
+
+    if (isNumeric(query)) {
+      if (isBarcode(query)) {
+        queryByCode(query);
+      } else {
+        alert("Por favor, insira um código de barras válido.");
+      }
+    } else if (query !== "") {
+      queryItemInput.addEventListener("keyup", (event) => {
+        if (event.key === "Enter") {
+          queryByName(query);
+        }
+      });
+    } else if (query === "") {  
+      setTimeout(() => {
+        queryItemInput.focus();
+      })
+    }
   }
+
+  function queryByCode(query) {
+    fetch("/pdv/pesquisar-produto", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query }),
+    })
+      .then(handleResponse)
+      .then((data) => {
+        if (data.status === "ok") {
+          addItemsToQueryList(data.data);
+        } else {
+          console.error("Unexpected response status:", data.status);
+        }
+      })
+      .catch(handleError);
+  }
+
+  function queryByName(query) {
+    fetch("/pdv/pesquisar-produto", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query }),
+    })
+      .then(handleResponse)
+      .then((result) => {
+        if (result.status === "ok") {
+          addItemsToQueryList(result.data);
+        } else {
+          alert(result.message);
+        }
+      })
+      .catch(handleError);
+  }
+
   function addProductsToModal(products) {
     modalProducts.style.display = "block";
     modalProductsList.innerHTML = "";
@@ -145,6 +207,30 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     table.appendChild(tbody);
     modalProductsList.appendChild(table);
+  }
+
+  function addItemsToQueryList(items) {
+    modalQueryItems.style.display = "block";
+
+    const table = document.createElement("table");
+    table.id = "query-items-table";
+    modalQueryItems.appendChild(table);
+
+    const tbody = document.createElement("tbody");
+
+    items.forEach((item) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${item.barcode}</td>
+        <td>${item.name}</td>
+        <td>${item.quantity}</td>
+        <td>${item.cost}</td>
+        <td>${item.price}</td>
+      `;
+      tbody.appendChild(row);
+    });
+
+    table.appendChild(tbody);
   }
 
   function addProductToSale(product) {
