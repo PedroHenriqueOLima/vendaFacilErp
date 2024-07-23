@@ -112,25 +112,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function queryItem() {
     modalQueryItems.style.display = "block";
- 
+
     const query = queryItemInput.value.trim();
 
     if (isNumeric(query)) {
-      if (isBarcode(query)) {
-        queryByCode(query);
-      } else {
-        alert("Por favor, insira um código de barras válido.");
-      }
-    } else if (query !== "") {
-      queryItemInput.addEventListener("keyup", (event) => {
-        if (event.key === "Enter") {
-          queryByName(query);
+      if (query.length === 12 || query.length === 13) {
+        if (isBarcode(query)) {
+          queryByCode(query);
+        } else {
+          alert("Por favor, insira um código de barras válido.");
         }
-      });
-    } else if (query === "") {  
-      setTimeout(() => {
-        queryItemInput.focus();
-      })
+      } else {
+        if (query !== "") {
+          queryItemInput.addEventListener("keyup", (event) => {
+            if (event.key === "Enter") {
+              queryByName(query);          
+              queryItemInput.value = "";
+            }
+          });
+        } else {
+          queryItemInput.placeholder =
+            "Insira o código de barras ou descrição do item";
+
+        }
+      }
     }
   }
 
@@ -162,11 +167,11 @@ document.addEventListener("DOMContentLoaded", function () {
       body: JSON.stringify({ query }),
     })
       .then(handleResponse)
-      .then((result) => {
-        if (result.status === "ok") {
-          addItemsToQueryList(result.data);
+      .then((data) => {
+        if (data.status === "ok") {
+          addItemsToQueryList(data.data);
         } else {
-          alert(result.message);
+          alert(data.message);
         }
       })
       .catch(handleError);

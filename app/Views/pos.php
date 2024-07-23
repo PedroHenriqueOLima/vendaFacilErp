@@ -36,7 +36,7 @@
             </div>
 
             <div id="modal-query-items-body"></div>
-                <input type="text" id="query-item-input" placeholder="Insira o código de barras ou descrição e tecle Enter">
+                <input type="text" id="query-item-input">
                 <div id="modal-query-items-list">
                     <!-- Tabela de itens será inserida aqui -->
                 </div>
