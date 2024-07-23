@@ -12,20 +12,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let totalItems = 0;
 
-  let debounceTimeout;
-
   btnCloseSystem.addEventListener("click", () => {
     closeSystem();
   });
 
   // Função de busca 
-  searchItem.addEventListener("keyup", (event) => {
+  searchItem.addEventListener("input", (event) => {
 
     const query = event.target.value.trim();
 
-    // Limpa o timeout anterior
-    clearTimeout(debounceTimeout);
-
+    console.log(query.length);
     // Verifica se é um código de barras (ajuste o comprimento conforme necessário)
     if (isNumeric(query) && (query.length === 12 || query.length === 13)) {
       if (isBarcode(query)) {
@@ -34,8 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Por favor, insira um código de barras válido.");
       }
     } else if (query !== "") {
-      searchByName(query);
-      searchItem.value = "";
+      searchItem.addEventListener("keyup", (event) => {
+        if (event.key === "Enter") {
+          console.log(query);
+          searchByName(query);
+        } else {
+          modalProducts.style.display = "none";
+        }
+      })
     } else {
       modalProducts.style.display = "none";
     }
@@ -247,6 +249,8 @@ document.addEventListener("DOMContentLoaded", function () {
     row.appendChild(actionCell);
 
     productsSaleList.appendChild(row);
+
+    searchItem.value = "";
   }
 
   // Função para remover produtos da lista de vendas
