@@ -6,10 +6,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnCloseSystem = document.getElementById("btn-close-system");
   const btnCloseModalProducts = document.getElementById("btn-close-modal-products");
   const productsSaleList = document.getElementById("products-list-body");
-
+  const displayTotalItems = document.getElementById("total-items");
+  const displayTotalPrice = document.getElementById("total-price");
   // Variáveis
   let totalItems = 0;
-
+  let totalValue = 0;
   // Eventos
   btnCloseSystem.addEventListener("click", closeSystem);
   btnCloseModalProducts.addEventListener("click", closeModalProducts);
@@ -142,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const row = document.createElement("tr");
     const quantity = 1;
     totalItems += 1;
+    totalValue += parseFloat(product.price) * quantity; // Adiciona o valor do product.price;
 
     row.innerHTML = `
       <td>${totalItems}</td>
@@ -153,11 +155,13 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
     
     row.querySelector(".btn-remove-product").addEventListener("click", () => {
-      removeProductFromSale(row);
+      removeProductFromSale(row);   
       totalItems -= 1;
       updateOrderNumbers();
     });
 
+    displayTotalItems.innerHTML = `<h4>Total de Itens: </br> ${totalItems}</h4>`; 
+    displayTotalPrice.innerHTML = `<h4>Valor Total: </br> R$ ${totalValue} </h4>`;
     productsSaleList.appendChild(row);
     searchItem.value = "";
   }
@@ -172,6 +176,8 @@ document.addEventListener("DOMContentLoaded", function () {
       row.querySelector("td").textContent = index + 1;
     });
   }
+
+
 
   function closeModalProducts() {
     modalProducts.style.display = "none";

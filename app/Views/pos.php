@@ -80,7 +80,7 @@
                                 <th id="product-number">Nº</th>
                                 <th id="product-name">Item</th>
                                 <th id="product-quantity">Quantidade</th>
-                                <th id="product-price">Valor Unitário</th>
+                                <th id="product-price">Valor</th>
                                 <th id="product-total">Valor Total</th>
                                 <th id="product-action">Ação</th>
                             </tr>
@@ -98,10 +98,10 @@
                     <button id="cancel-btn">Cancelar Venda (F5)</button>
                     <div id="total-items">
                         <h3>Total de Itens</h3>
-                        <p id="total-items-value">0</p>
+                        <p>0</p>
                     </div>
                     <div id="total-price">
-                        <h3>Total</h3>
+                        <h3>Valor Total</h3>
                         <p id="total-price-value">R$ 0,00</p>
                     </div>
 

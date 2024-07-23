@@ -263,17 +263,31 @@
 }
 
 #products-list #product-name {
-  width: 45%;
+  width: 35%;
 }
 
 #products-list #product-price {
   width: 15%;
 }
 
+#products-list #product-quantity {
+  width: 15%;
+}
+
+#products-list #product-total {
+  width: 15%;
+}
+
+#products-list #product-action {
+  width: 10%;
+}
+
 #products-list-body {
   width: 100%;
   text-align: center;
 }
+
+
 
 .btn-remove-product {
   background-color: #b9404a;
