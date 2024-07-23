@@ -20,16 +20,15 @@ class PosController extends BaseController
 
         if (is_numeric($query)) {
             $product = $this->searchItemByCode($query);
-
-            if (!isNull(count($product))) {
-                return json_encode(['status' => 'ok', 'data' => $product]);
-            } else {
-                return json_encode(['status' => 'error']);
-            }
-        } else {
+            $response = $this->response->setJSON(['status' => 'ok', 'data' => $product]);
+        } else if (is_string($query)) {
             $items = $this->searchItemByName($query);
-            return json_encode(['status' => 'ok', 'data' => $items]);
+            $response = $this->response->setJSON(['status' => 'ok', 'data' => $items]);
+        } else {
+            $response = $this->response->setJSON(['status' => 'error']);
         }
+
+        return $response;
     }
 
     private function searchItemByCode($query)
@@ -40,10 +39,9 @@ class PosController extends BaseController
 
         $productBuilder->where('barcode', $query);
 
-        $product = $productBuilder->get()->getResult();
+        $product = $productBuilder->get()->getResultArray();
 
-
-        return $product;
+        return $product[0];
     }
 
     private function searchItemByName($query)

@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (isBarcode(query)) {
           searchByCode(query);
         } else {
-          alert("Por favor, insira um código de barras de 13 dígitos.");
+          alert("Por favor, insira um código de barras válido.");
         }
       } else if (query.trim() === "") {
         alert("Por favor, insira um nome ou um código de barras.");
@@ -52,23 +52,22 @@ document.addEventListener("DOMContentLoaded", function () {
       }),
     })
       .then((response) => {
-        if (response.ok) {
-          console.log(response.json);
-        } else {
-          alert("Nenhum item encontrado, com este código de barras.");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
         }
+        return response.json(); // Converter a resposta para JSON
       })
-      .then((result) => {
-        console.log(result); // Log the full result object for debugging
-        if (result.status === "ok") {
-          const product = result.data; // Extract the products from the `data` key
-          addProductToSale(product); // Pass the products to your function
+      .then((data) => {
+        console.log(data); // Para depuração
+        if (data.status ===  'ok') {
+          const product = data.data; // Extrair produtos do campo `data`
+          addProductToSale(product); // Passar produtos para sua função
         } else {
-          console.error("Unexpected response status:", result.status);
+          console.error("Unexpected response status:", data.status);
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error("There was a problem with the fetch operation:", error);
       });
   }
 
