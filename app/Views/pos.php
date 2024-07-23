@@ -31,12 +31,12 @@
 
         <div id="modal-query-items">
             <div id="modal-query-items-header">
-                <h5 id="modal-query-products-title">Consultar Item</h5>
-                <button id="btn-close-query-items">Fechar</button>
+                <h5 id="modal-query-items-title">Consultar Item</h5>
+                <button id="btn-close-query-items">Terminar Consulta</button>
             </div>
 
             <div id="modal-query-items-body"></div>
-                <input type="text" id="query-item" placeholder="Insira o código de barras ou descrição e tecle Enter">
+                <input type="text" id="query-item-input" placeholder="Insira o código de barras ou descrição e tecle Enter">
                 <div id="modal-query-items-list">
                     <!-- Tabela de itens será inserida aqui -->
                 </div>
