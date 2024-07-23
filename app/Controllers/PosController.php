@@ -23,7 +23,12 @@ class PosController extends BaseController
             $response = $this->response->setJSON(['status' => 'ok', 'data' => $product]);
         } else if (is_string($query)) {
             $items = $this->searchItemByName($query);
-            $response = $this->response->setJSON(['status' => 'ok', 'data' => $items]);
+            if (count($items) > 0) {
+                $response = $this->response->setJSON(['status' => 'ok', 'data' => $items]);
+            } else {
+                $response = $this->response->setJSON(['status' => 'error', 'message' => 'Nenhum item encontrado, com este nome']);
+            }
+           
         } else {
             $response = $this->response->setJSON(['status' => 'error']);
         }

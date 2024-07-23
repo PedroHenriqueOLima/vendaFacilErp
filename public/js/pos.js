@@ -94,7 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (response.ok) {
           return response.json(); // Parse the JSON from the response
         } else {
-          alert("Nenhum item encontrado, com este nome.");
           throw new Error("Network response was not ok.");
         }
       })
@@ -104,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const products = result.data; // Extract the products from the `data` key
           addProductsToModal(products); // Pass the products to your function
         } else {
-          console.error("Unexpected response status:", result.status);
+          alert(result.message);
         }
       })
       .catch((error) => {
