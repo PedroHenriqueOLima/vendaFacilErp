@@ -1,10 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Elementos do DOM
+  const modalQueryItems = document.getElementById("modal-query-items");
   const modalProducts = document.getElementById("modal-products");
   const modalProductsList = document.getElementById("modal-products-list");
+  const queryItemBtn = document.getElementById("query-btn");
   const searchItem = document.getElementById("search-item");
   const btnCloseSystem = document.getElementById("btn-close-system");
-  const btnCloseModalProducts = document.getElementById("btn-close-modal-products");
+  const btnCloseModalProducts = document.getElementById(
+    "btn-close-modal-products"
+  );
   const productsSaleList = document.getElementById("products-list-body");
   const displayTotalItems = document.getElementById("total-items");
   const displayTotalPrice = document.getElementById("total-price");
@@ -15,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
   btnCloseSystem.addEventListener("click", closeSystem);
   btnCloseModalProducts.addEventListener("click", closeModalProducts);
   searchItem.addEventListener("input", handleSearchInput);
+  queryItemBtn.addEventListener('click', () =>{ queryItem(); });
 
   // Funções
   function handleSearchInput(event) {
@@ -52,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
       body: JSON.stringify({ query }),
     })
       .then(handleResponse)
-      .then(data => {
+      .then((data) => {
         if (data.status === "ok") {
           addProductToSale(data.data);
           searchItem.value = "";
@@ -72,8 +77,8 @@ document.addEventListener("DOMContentLoaded", function () {
       body: JSON.stringify({ query }),
     })
       .then(handleResponse)
-      .then(result => {
-        if (result.status === 'ok') {
+      .then((result) => {
+        if (result.status === "ok") {
           addProductsToModal(result.data);
         } else {
           alert(result.message);
@@ -102,6 +107,9 @@ document.addEventListener("DOMContentLoaded", function () {
     return /^\d+$/.test(input);
   }
 
+  function queryItem() {
+    modalQueryItems.style.display = "block";
+  }
   function addProductsToModal(products) {
     modalProducts.style.display = "block";
     modalProductsList.innerHTML = "";
@@ -121,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
     table.appendChild(thead);
 
     const tbody = document.createElement("tbody");
-    products.forEach(product => {
+    products.forEach((product) => {
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${product.name}</td>
@@ -153,14 +161,14 @@ document.addEventListener("DOMContentLoaded", function () {
       <td>R$ ${(product.price * quantity).toFixed(2)}</td>
       <td><button class="btn btn-remove-product">Remover</button></td>
     `;
-    
+
     row.querySelector(".btn-remove-product").addEventListener("click", () => {
-      removeProductFromSale(row);   
+      removeProductFromSale(row);
       totalItems -= 1;
       updateOrderNumbers();
     });
 
-    displayTotalItems.innerHTML = `<h4>Total de Itens: </br> ${totalItems}</h4>`; 
+    displayTotalItems.innerHTML = `<h4>Total de Itens: </br> ${totalItems}</h4>`;
     displayTotalPrice.innerHTML = `<h4>Valor Total: </br> R$ ${totalValue} </h4>`;
     productsSaleList.appendChild(row);
     searchItem.value = "";
@@ -176,8 +184,6 @@ document.addEventListener("DOMContentLoaded", function () {
       row.querySelector("td").textContent = index + 1;
     });
   }
-
-
 
   function closeModalProducts() {
     modalProducts.style.display = "none";

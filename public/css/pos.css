@@ -94,7 +94,22 @@
   text-align: center;
   font-size: 18px;
 }
+#modal-query-items {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  top: 200px;
+  left: auto;
+  right: auto;
+  width: 90%;
+  height: 50%;
+  border: 0.5px solid #eee;
+  border-radius: 10px;
+  overflow: auto;
+  background-color: rgba(0, 0, 255, 0.9);
+}
 
+  
 #modal-products {
   display: none;
   position: fixed;
@@ -107,7 +122,6 @@
   border: 0.5px solid #eee;
   border-radius: 10px;
   overflow: auto;
-  background-color: rgb(46, 132, 144);
   background-color: rgba(0, 0, 255, 0.9);
 }
 

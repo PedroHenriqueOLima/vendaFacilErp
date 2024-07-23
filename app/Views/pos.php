@@ -27,7 +27,22 @@
 
         <input type="text" id="search-item" placeholder="Insira o código de barras do item ou digite o nome do item">
 
+        <!-- Modal de consulta de item -->
 
+        <div id="modal-query-items">
+            <div id="modal-query-items-header">
+                <h5 id="modal-query-products-title">Consultar Item</h5>
+                <button id="btn-close-query-items">Fechar</button>
+            </div>
+
+            <div id="modal-query-items-body"></div>
+                <input type="text" id="query-item" placeholder="Insira o código de barras ou descrição e tecle Enter">
+                <div id="modal-query-items-list">
+                    <!-- Tabela de itens será inserida aqui -->
+                </div>
+            </div>
+
+        </div>
         <!-- Modal para lista de produtos -->
         <div id="modal-products">
             <div id="modal-products-header">
@@ -51,6 +66,7 @@
                     Consultar Item
                 </button>
 
+                
                 <button id="add-product-btn">
                     Cadastrar Produto
                 </button>
@@ -71,7 +87,7 @@
 
             <div id="right-container">
 
-
+                
                 <!-- Lista de itens da venda -->
                 <div id="products-list">
                     <table>
