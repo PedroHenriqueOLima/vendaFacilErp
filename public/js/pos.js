@@ -58,6 +58,15 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("Nenhum item encontrado, com este código de barras.");
         }
       })
+      .then((result) => {
+        console.log(result); // Log the full result object for debugging
+        if (result.status === "ok") {
+          const product = result.data; // Extract the products from the `data` key
+          addProductToSale(product); // Pass the products to your function
+        } else {
+          console.error("Unexpected response status:", result.status);
+        }
+      })
       .catch((error) => {
         console.error(error);
       });

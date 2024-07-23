@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Controllers;
+
 use CodeIgniter\HTTP\Request;
 use Config\Database;
+
+use function PHPUnit\Framework\isNull;
 
 class PosController extends BaseController
 {
@@ -14,28 +17,37 @@ class PosController extends BaseController
     public function searchItem()
     {
         $query = $this->request->getJSON(true)['query'];
-        
-        if (is_numeric($query)) {
-            $products = $this->searchItemByCode($query);
-        } else {
-            $products = $this->searchItemByName($query);
-        }
 
+        if (is_numeric($query)) {
+            $product = $this->searchItemByCode($query);
+
+            if (!isNull(count($product))) {
+                return json_encode(['status' => 'ok', 'data' => $product]);
+            } else {
+                return json_encode(['status' => 'error']);
+            }
+        } else {
+            $items = $this->searchItemByName($query);
+            return json_encode(['status' => 'ok', 'data' => $items]);
+        }
     }
 
-    private function searchItemByCode($query) {
+    private function searchItemByCode($query)
+    {
         $db = Database::connect();
 
-        $productsBuilder = $db->table('products');
+        $productBuilder = $db->table('products');
 
-        $productsBuilder->where('barcode', $query);
+        $productBuilder->where('barcode', $query);
 
-        $products = $productsBuilder->get();
+        $product = $productBuilder->get()->getResult();
 
-        return $products;
+
+        return $product;
     }
 
-    private function searchItemByName($query) {
+    private function searchItemByName($query)
+    {
 
         $db = Database::connect();
 
@@ -45,13 +57,11 @@ class PosController extends BaseController
         $productsBuilder->like('name', $query);
         $servicesBuilder->like('name', $query);
 
-        $products = $productsBuilder->get();
-        $services = $servicesBuilder->get();
+        $products = $productsBuilder->get()->getResultArray();
+        $services = $servicesBuilder->get()->getResultArray();
 
-        $results = array_merge($products, $services);
+        $items = array_merge($products, $services);
 
-        return $results;
-
-
+        return $items;
     }
 }
