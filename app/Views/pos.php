@@ -95,7 +95,7 @@
                 <!-- Informações da venda -->
 
                 <div id="row-footer">
-                    <button id="cancel-btn">Cancelar Venda</button>
+                    <button id="cancel-btn">Cancelar Venda (F5)</button>
                     <div id="total-items">
                         <h3>Total de Itens</h3>
                         <p id="total-items-value">0</p>
@@ -106,7 +106,7 @@
                     </div>
 
 
-                    <button id="confirm-btn">Finalizar Venda</button>
+                    <button id="confirm-btn">Finalizar Venda (F9)</button>
                 </div>
             </div>
         </main>

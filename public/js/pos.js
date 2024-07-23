@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const modalProducts = document.getElementById("modal-products");
-  const modalBody = document.getElementById("modal-body");
+  const modalProducts = document.getElementById("modal-products");;
   const modalProductsList = document.getElementById("modal-products-list");
   const searchItem = document.getElementById("search-item");
   const btnCloseSystem = document.getElementById("btn-close-system");
@@ -19,27 +18,31 @@ document.addEventListener("DOMContentLoaded", function () {
     closeSystem();
   });
 
+  // Função de busca 
   searchItem.addEventListener("keyup", (event) => {
-    const query = event.target.value;
+
+    const query = event.target.value.trim();
 
     // Limpa o timeout anterior
     clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(() => {
-      if (isNumeric(query.trim())) {
-        if (isBarcode(query)) {
-          searchByCode(query);
-        } else {
-          alert("Por favor, insira um código de barras válido.");
-        }
-      } else if (query.trim() === "") {
-        alert("Por favor, insira um nome ou um código de barras.");
+
+    // Verifica se é um código de barras (ajuste o comprimento conforme necessário)
+    if (isNumeric(query) && (query.length === 12 || query.length === 13)) {
+      if (isBarcode(query)) {
+        searchByCode(query);
       } else {
-        searchByName(query);
+        alert("Por favor, insira um código de barras válido.");
       }
-    }, 1200); // 500ms de atraso
+    } else if (query !== "") {
+      searchByName(query);
+      searchItem.value = "";
+    } else {
+      modalProducts.style.display = "none";
+    }
 
     event.preventDefault();
   });
+
   // Função de busca pelo código de barras
   function searchByCode(query) {
     fetch("/pdv/pesquisar-produto", {
@@ -58,10 +61,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json(); // Converter a resposta para JSON
       })
       .then((data) => {
-        console.log(data); // Para depuração
-        if (data.status ===  'ok') {
-          const product = data.data; // Extrair produtos do campo `data`
-          addProductToSale(product); // Passar produtos para sua função
+        console.log(data);
+        if (data.status === "ok") {
+          const product = data.data; 
+          addProductToSale(product);
+          searchItem.value = "";
         } else {
           console.error("Unexpected response status:", data.status);
         }
@@ -75,7 +79,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   btnCloseModalProducts.addEventListener("click", () => {
     modalProducts.style.display = "none";
-    modalBody.innerHTML = "";
     modalProductsList.innerHTML = "";
   });
 
@@ -104,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
           addProductsToModal(products); // Pass the products to your function
         } else {
           alert(result.message);
+          searchItem.value = "";
         }
       })
       .catch((error) => {
