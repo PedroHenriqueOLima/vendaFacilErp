@@ -14,4 +14,17 @@ class PosController extends BaseController
         return view('pos');
     }
 
+    public function searchItem() {
+
+    }
+
+    private function searchProduct() {
+
+    }
+
+    private function searchService() {
+
+    }
+
+
 }
