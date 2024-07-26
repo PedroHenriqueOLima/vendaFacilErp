@@ -127,7 +127,7 @@
             </div>
         </main>
 
-        <script src="./js/pos.js"></script>
+        <script src="./js/pos1.js"></script>
 </body>
 
 </html>
