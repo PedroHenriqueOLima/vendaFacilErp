@@ -50,39 +50,39 @@ document.addEventListener("DOMContentLoaded", function () {
   let debounceTimeout;
 
   function handleSearchInput(event) {
-      let query = event.target.value.trim();
-      
-      if (isNumeric(query) && isBarcode(query)) {
-          console.log("código buscado:", query);
-          searchByCode(query);
-          searchItem.value = ""; // Limpar o input após buscar pelo código
-      } else if (isDescription(query)) {
-          // Limpar o timeout anterior
-          clearTimeout(debounceTimeout);
-          debounceTimeout = setTimeout(() => {
-              console.log("descrição buscada:", query);
-              searchByName(query);
-          }, 1200); // Tempo de atraso de 1200ms para busca por descrição
-      }
+    let query = event.target.value.trim();
+
+    if (isNumeric(query) && isBarcode(query)) {
+      console.log("código buscado:", query);
+      searchByCode(query);
+      searchItem.value = ""; // Limpar o input após buscar pelo código
+    } else if (isDescription(query)) {
+      // Limpar o timeout anterior
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        console.log("descrição buscada:", query);
+        searchByName(query);
+      }, 1200); // Tempo de atraso de 1200ms para busca por descrição
+    }
   }
-  
+
   // Função auxiliar para verificar se a query é uma descrição
   function isDescription(query) {
-      return query.length > 0 && !isNumeric(query);
+    return query.length > 0 && !isNumeric(query);
   }
-  
+
   // Função debounce (adiar a execução da função)
   function debounce(func, timeout = 300) {
-      return (...args) => {
-          clearTimeout(debounceTimeout);
-          debounceTimeout = setTimeout(() => {
-              func.apply(this, args);
-          }, timeout);
-      };
+    return (...args) => {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        func.apply(this, args);
+      }, timeout);
+    };
   }
-  
+
   searchItem.addEventListener("input", handleSearchInput); // Usar "input" em vez de "keyup" para detectar qualquer mudança no valor do input
-  
+
   // Função para consultar os itens a partir do botão consultar item
   function queryItem() {
     modalQueryItems.style.display = "block";
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => {
         if (response.status === "ok") {
           console.log("produto encontrado:", response);
-          console.log("query", query);
+          addItemsToModal(response.data);
         } else {
           console.log("erro", response);
         }
@@ -154,6 +154,43 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch((message) => {
         console.error("Erro:", message);
       });
+  }
+
+  function addItemsToModal(products) {
+    modalProducts.style.display = "block";
+    modalProductsList.innerHTML = "";
+
+    const table = document.createElement("table");
+    table.id = "product-table";
+
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+    headerRow.innerHTML = `
+      <th>Nome</th>
+      <th>Estoque</th>
+      <th>Preço</th>
+      <th>Adicionar a Venda</th>
+    `;
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    products.forEach((product) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${product.name}</td>
+        <td>${product.quantity}</td>
+        <td>R$ ${product.price}</td>
+        <td><button class="btn">Incluir na Venda</button></td>
+      `;
+      row.querySelector("button").addEventListener("click", () => {
+        addProductToSale(product);
+        modalProducts.style.display = "none";
+      });
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    modalProductsList.appendChild(table);
   }
 
   function addProductToSale(product) {
@@ -188,14 +225,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function removeProductFromSale(row) {
     row.parentNode.removeChild(row);
   }
-   
+
   function updateOrderNumbers() {
     const rows = productsSaleList.querySelectorAll("tr");
     rows.forEach((row, index) => {
       row.querySelector("td").textContent = index + 1;
     });
   }
-
 
   function updateTotalItems() {
     const rows = productsSaleList.querySelectorAll("tr");
@@ -207,7 +243,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const rows = productsSaleList.querySelectorAll("tr");
     totalValue = 0;
     rows.forEach((row) => {
-      totalValue += parseFloat(row.querySelector(".total-value").textContent.replace("R$", ""));
+      totalValue += parseFloat(
+        row.querySelector(".total-value").textContent.replace("R$", "")
+      );
     });
     displayTotalPrice.innerHTML = `<h4>Valor Total: </br> R$ ${totalValue} </h4>`;
   }

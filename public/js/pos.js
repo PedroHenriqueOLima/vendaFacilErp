@@ -228,6 +228,10 @@ document.addEventListener("DOMContentLoaded", function () {
     table.appendChild(tbody);
   }
 
+  function openModalOfSearch() {
+    modalProducts.style.display = "block";
+  }
+
   function addProductToSale(product) {
     const row = document.createElement("tr");
     const quantity = 1;
