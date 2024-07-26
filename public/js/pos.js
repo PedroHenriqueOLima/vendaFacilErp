@@ -59,16 +59,17 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: JSON.stringify({ query }),
     })
-      .then(handleResponse)
-      .then((data) => {
-        if (data.status === "ok") {
-          addProductToSale(data.data);
-          searchItem.value = "";
-        } else {
-          console.error("Unexpected response status:", data.status);
-        }
-      })
-      .catch(handleError);
+
+    .then(response => response.json())
+
+    .then(response =>  {
+      if (response.status === "ok") {
+        addProductToSale(response.data);
+      } else {
+        alert(response.message);
+        searchItem.value = "";
+      }
+    })
   }
 
   function searchByName(query) {
@@ -82,24 +83,13 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(handleResponse)
       .then((result) => {
         if (result.status === "ok") {
-          addProductsToModal(result.data);
+          addItemsToModal(result.data);
         } else {
           alert(result.message);
           searchItem.value = "";
         }
       })
-      .catch(handleError);
-  }
-
-  function handleResponse(response) {
-    if (!response.ok) {
-      throw new Error("Network response was not ok.");
-    }
-    return response.json();
-  }
-
-  function handleError(error) {
-    console.error("There was a problem with the fetch operation:", error);
+  
   }
 
   function isBarcode(query) {
@@ -177,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(handleError);
   }
 
-  function addProductsToModal(products) {
+  function addItemsToModal(products) {
     modalProducts.style.display = "block";
     modalProductsList.innerHTML = "";
 
