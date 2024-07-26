@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let query = event.target.value.trim();
     if (isNumeric(query) && isBarcode(query)) {
       console.log("código buscado:", query);
+      searchByCode(query);
       searchItem.value = ""; // Buscar pelo código
     } else {
       if (isDescription(query)) {
@@ -104,12 +105,17 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then((response) => response.json())
 
-      .then((response) => {
+    
+      .then(response => {
         if (response.status === "ok") {
-          console.log("produto encontrado:", response.data);
+          console.log("produto encontrado:", response);
         } else {
-          console.log("erro");
+          console.log("erro", response);
         }
+      })
+      
+      .catch((error) => {
+        console.error("Erro:", error);
       });
   }
 });
