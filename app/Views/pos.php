@@ -80,6 +80,8 @@
                 </button>
 
                 <button id="add-receivable-btn">Contas a Receber</button>
+
+                <button id="list-sales-btn">Listar Vendas</button>
             </div>
             <!-- Container de itens da esquerda -->
 
@@ -127,7 +129,7 @@
             </div>
         </main>
 
-        <script src="./js/pos1.js"></script>
+        <script src="./js/pos.js"></script>
 </body>
 
 </html>

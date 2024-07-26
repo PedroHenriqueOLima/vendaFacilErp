@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Elementos do DOM
+
   const modalQueryItems = document.getElementById("modal-query-items");
   const modalProducts = document.getElementById("modal-products");
   const modalProductsList = document.getElementById("modal-products-list");
@@ -13,10 +14,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const productsSaleList = document.getElementById("products-list-body");
   const displayTotalItems = document.getElementById("total-items");
   const displayTotalPrice = document.getElementById("total-price");
+
   // Variáveis
+
   let totalItems = 0;
   let totalValue = 0;
+
   // Eventos
+
   btnCloseSystem.addEventListener("click", closeSystem);
   btnCloseModalProducts.addEventListener("click", closeModalProducts);
   searchItem.addEventListener("input", handleSearchInput);
@@ -25,31 +30,83 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Funções
-  function handleSearchInput(event) {
-    const query = event.target.value.trim();
-    console.log(query.length);
 
-    if (isNumeric(query) && (query.length === 12 || query.length === 13)) {
-      if (isBarcode(query)) {
-        searchByCode(query);
-      } else {
-        alert("Por favor, insira um código de barras válido.");
-      }
-    } else if (query !== "") {
-      searchItem.addEventListener("keyup", (event) => {
-        if (event.key === "Enter") {
-          console.log(query);
-          searchByName(query);
-        } else {
-          modalProducts.style.display = "none";
-        }
-      });
-    } else {
-      modalProducts.style.display = "none";
-    }
+  // Função para fechar o PDV
 
-    event.preventDefault();
+  function closeSystem() {
+    window.location.href = "/login";
   }
+
+  // Função para fechar o modal de produtos
+  function closeModalProducts() {
+    modalProducts.style.display = "none";
+    modalProductsList.innerHTML = "";
+  }
+
+  // Função para manipular o input de pesquisa
+
+  // Tempo de espera para o usuário digitar
+
+  let debounceTimeout;
+
+  function handleSearchInput(event) {
+    let query = event.target.value.trim();
+
+    if (isNumeric(query) && isBarcode(query)) {
+      console.log("código buscado:", query);
+      searchByCode(query);
+      searchItem.value = ""; // Limpar o input após buscar pelo código
+    } else if (isDescription(query)) {
+      // Limpar o timeout anterior
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        console.log("descrição buscada:", query);
+        searchByName(query);
+      }, 1200); // Tempo de atraso de 1200ms para busca por descrição
+    }
+  }
+
+  // Função auxiliar para verificar se a query é uma descrição
+  function isDescription(query) {
+    return query.length > 0 && !isNumeric(query);
+  }
+
+  // Função debounce (adiar a execução da função)
+  function debounce(func, timeout = 300) {
+    return (...args) => {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        func.apply(this, args);
+      }, timeout);
+    };
+  }
+
+  searchItem.addEventListener("input", handleSearchInput); // Usar "input" em vez de "keyup" para detectar qualquer mudança no valor do input
+
+  // Função para consultar os itens a partir do botão consultar item
+  function queryItem() {
+    modalQueryItems.style.display = "block";
+  }
+
+  // Função para verificar se a query é um código de barras de 12 ou 13 digitos
+
+  function isBarcode(query) {
+    return /^[0-9]{12,13}$/.test(query);
+  }
+
+  // Função para verificar se a query é um número
+
+  function isNumeric(query) {
+    return /^[0-9]+$/.test(query);
+  }
+
+  // Função para verificar se é uma descrição
+
+  function isDescription(query) {
+    return !isBarcode(query) && !isNumeric(query);
+  }
+
+  // Função para buscar o item pelo código
 
   function searchByCode(query) {
     fetch("/pdv/pesquisar-produto", {
@@ -59,17 +116,20 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: JSON.stringify({ query }),
     })
+      .then((response) => response.json())
 
-    .then(response => response.json())
+      .then((response) => {
+        if (response.status === "ok") {
+          console.log("produto encontrado:", response);
+          addProductToSale(response.data);
+        } else {
+          console.log("erro", response);
+        }
+      })
 
-    .then(response =>  {
-      if (response.status === "ok") {
-        addProductToSale(response.data);
-      } else {
-        alert(response.message);
-        searchItem.value = "";
-      }
-    })
+      .catch((error) => {
+        console.error("Erro:", error);
+      });
   }
 
   function searchByName(query) {
@@ -80,91 +140,21 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: JSON.stringify({ query }),
     })
-      .then(handleResponse)
-      .then((result) => {
-        if (result.status === "ok") {
-          addItemsToModal(result.data);
+      .then((response) => response.json())
+
+      .then((response) => {
+        if (response.status === "ok") {
+          console.log("produto encontrado:", response);
+          addItemsToModal(response.data);
         } else {
-          alert(result.message);
+          alert('Não há nenhum item com essa descrição. Tente novamente.');
           searchItem.value = "";
         }
       })
-  
-  }
 
-  function isBarcode(query) {
-    return /^\d{13}$/.test(query);
-  }
-
-  function isNumeric(input) {
-    return /^\d+$/.test(input);
-  }
-
-  function queryItem() {
-    modalQueryItems.style.display = "block";
-
-    const query = queryItemInput.value.trim();
-
-    if (isNumeric(query)) {
-      if (query.length === 12 || query.length === 13) {
-        if (isBarcode(query)) {
-          queryByCode(query);
-        } else {
-          alert("Por favor, insira um código de barras válido.");
-        }
-      } else {
-        if (query !== "") {
-          queryItemInput.addEventListener("keyup", (event) => {
-            if (event.key === "Enter") {
-              queryByName(query);          
-              queryItemInput.value = "";
-            }
-          });
-        } else {
-          queryItemInput.placeholder =
-            "Insira o código de barras ou descrição do item";
-
-        }
-      }
-    }
-  }
-
-  function queryByCode(query) {
-    fetch("/pdv/pesquisar-produto", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query }),
-    })
-      .then(handleResponse)
-      .then((data) => {
-        if (data.status === "ok") {
-          addItemsToQueryList(data.data);
-        } else {
-          console.error("Unexpected response status:", data.status);
-        }
-      })
-      .catch(handleError);
-  }
-
-  function queryByName(query) {
-    fetch("/pdv/pesquisar-produto", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query }),
-    })
-      .then(handleResponse)
-      .then((data) => {
-        if (data.status === "ok") {
-          addItemsToQueryList(data.data);
-        } else {
-          alert(data.message);
-        }
-      })
-      .catch(handleError);
+      .catch((message) => {
+        console.error("Erro:", message);
+      });
   }
 
   function addItemsToModal(products) {
@@ -204,34 +194,6 @@ document.addEventListener("DOMContentLoaded", function () {
     modalProductsList.appendChild(table);
   }
 
-  function addItemsToQueryList(items) {
-    modalQueryItems.style.display = "block";
-
-    const table = document.createElement("table");
-    table.id = "query-items-table";
-    modalQueryItems.appendChild(table);
-
-    const tbody = document.createElement("tbody");
-
-    items.forEach((item) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${item.barcode}</td>
-        <td>${item.name}</td>
-        <td>${item.quantity}</td>
-        <td>${item.cost}</td>
-        <td>${item.price}</td>
-      `;
-      tbody.appendChild(row);
-    });
-
-    table.appendChild(tbody);
-  }
-
-  function openModalOfSearch() {
-    modalProducts.style.display = "block";
-  }
-
   function addProductToSale(product) {
     const row = document.createElement("tr");
     const quantity = 1;
@@ -239,11 +201,11 @@ document.addEventListener("DOMContentLoaded", function () {
     totalValue += parseFloat(product.price) * quantity; // Adiciona o valor do product.price;
 
     row.innerHTML = `
-      <td>${totalItems}</td>
-      <td>${product.name}</td>
-      <td>${quantity}</td>
-      <td>R$ ${product.price}</td>
-      <td>R$ ${(product.price * quantity).toFixed(2)}</td>
+      <td class="item-value">${totalItems}</td>
+      <td class="name-value">${product.name}</td>
+      <td class="quantity-value">${quantity}</td>
+      <td class="price-value">R$ ${product.price}</td>
+      <td class="total-value">R$ ${(product.price * quantity).toFixed(2)}</td>
       <td><button class="btn btn-remove-product">Remover</button></td>
     `;
 
@@ -251,6 +213,8 @@ document.addEventListener("DOMContentLoaded", function () {
       removeProductFromSale(row);
       totalItems -= 1;
       updateOrderNumbers();
+      updateTotalItems();
+      updateTotalValue();
     });
 
     displayTotalItems.innerHTML = `<h4>Total de Itens: </br> ${totalItems}</h4>`;
@@ -270,12 +234,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function closeModalProducts() {
-    modalProducts.style.display = "none";
-    modalProductsList.innerHTML = "";
+  function updateTotalItems() {
+    const rows = productsSaleList.querySelectorAll("tr");
+    totalItems = rows.length;
+    displayTotalItems.innerHTML = `<h4>Total de Itens: </br> ${totalItems}</h4>`;
   }
 
-  function closeSystem() {
-    window.location.href = "/login";
+  function updateTotalValue() {
+    const rows = productsSaleList.querySelectorAll("tr");
+    totalValue = 0;
+    rows.forEach((row) => {
+      totalValue += parseFloat(
+        row.querySelector(".total-value").textContent.replace("R$", "")
+      );
+    });
+    displayTotalPrice.innerHTML = `<h4>Valor Total: </br> R$ ${totalValue} </h4>`;
   }
 });
