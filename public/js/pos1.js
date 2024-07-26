@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (isDescription(query)) {
         searchItem.addEventListener("keyup", (event) => {
           if (event.key === "Enter") {
-            searchItem.value = "";
+            searchByName(query);
             console.log("busca por descrição:", query);
           } else {
             modalProducts.style.display = "none";
@@ -96,6 +96,31 @@ document.addEventListener("DOMContentLoaded", function () {
   // Função para buscar o item pelo código
 
   function searchByCode(query) {
+    fetch("/pdv/pesquisar-produto", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query }),
+    })
+      .then((response) => response.json())
+
+    
+      .then(response => {
+        if (response.status === "ok") {
+          console.log("produto encontrado:", response);
+        } else {
+          console.log("erro", response);
+        }
+      })
+      
+      .catch((error) => {
+        console.error("Erro:", error);
+      });
+  }
+
+
+  function searchByName(query) {
     fetch("/pdv/pesquisar-produto", {
       method: "POST",
       headers: {

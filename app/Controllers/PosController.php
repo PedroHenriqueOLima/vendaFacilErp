@@ -69,8 +69,8 @@ class PosController extends BaseController
         $servicesBuilder = $this->db->table('services');
 
 
-        $products = $productBuilder->getWhere(['name' => $query])->getResultArray();
-        $services = $servicesBuilder->getWhere(['name' => $query])->getResultArray();
+        $products = $productBuilder->like(['name' => $query])->get()->getResultArray();
+        $services = $servicesBuilder->like(['name' => $query])->get()->getResultArray();
 
         if (count($products) > 0 && count($services) > 0) {
 
