@@ -44,35 +44,48 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Função para manipular o input de pesquisa
-  function handleSearchInput(event) {
-    let query = event.target.value.trim();
-    if (isNumeric(query) && isBarcode(query)) {
-      console.log("código buscado:", query);
-      searchByCode(query);
-      searchItem.value = ""; // Buscar pelo código
-    } else {
-      if (isDescription(query)) {
-        searchItem.addEventListener("keyup", (event) => {
-          if (event.key === "Enter") {
-            searchByName(query);
-            console.log("busca por descrição:", query);
-          } else {
-            modalProducts.style.display = "none";
-          }
-        })
-      }
-    }
-  }
 
+  // Tempo de espera para o usuário digitar
+
+  let debounceTimeout;
+
+  function handleSearchInput(event) {
+      let query = event.target.value.trim();
+      
+      if (isNumeric(query) && isBarcode(query)) {
+          console.log("código buscado:", query);
+          searchByCode(query);
+          searchItem.value = ""; // Limpar o input após buscar pelo código
+      } else if (isDescription(query)) {
+          // Limpar o timeout anterior
+          clearTimeout(debounceTimeout);
+          debounceTimeout = setTimeout(() => {
+              console.log("descrição buscada:", query);
+              searchByName(query);
+          }, 1200); // Tempo de atraso de 1200ms para busca por descrição
+      }
+  }
+  
+  // Função auxiliar para verificar se a query é uma descrição
+  function isDescription(query) {
+      return query.length > 0 && !isNumeric(query);
+  }
+  
+  // Função debounce (adiar a execução da função)
+  function debounce(func, timeout = 300) {
+      return (...args) => {
+          clearTimeout(debounceTimeout);
+          debounceTimeout = setTimeout(() => {
+              func.apply(this, args);
+          }, timeout);
+      };
+  }
+  
+  searchItem.addEventListener("input", handleSearchInput); // Usar "input" em vez de "keyup" para detectar qualquer mudança no valor do input
+  
   // Função para consultar os itens a partir do botão consultar item
   function queryItem() {
     modalQueryItems.style.display = "block";
-  }
-
-  // Função para verificar se a query está vazia
-
-  function isEmpty(query) {
-    return !query || query.trim().length === 0;
   }
 
   // Função para verificar se a query é um código de barras de 12 ou 13 digitos
@@ -105,20 +118,19 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then((response) => response.json())
 
-    
-      .then(response => {
+      .then((response) => {
         if (response.status === "ok") {
           console.log("produto encontrado:", response);
+          addProductToSale(response.data);
         } else {
           console.log("erro", response);
         }
       })
-      
+
       .catch((error) => {
         console.error("Erro:", error);
       });
   }
-
 
   function searchByName(query) {
     fetch("/pdv/pesquisar-produto", {
@@ -130,17 +142,73 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then((response) => response.json())
 
-    
-      .then(response => {
+      .then((response) => {
         if (response.status === "ok") {
           console.log("produto encontrado:", response);
+          console.log("query", query);
         } else {
           console.log("erro", response);
         }
       })
-      
-      .catch((error) => {
-        console.error("Erro:", error);
+
+      .catch((message) => {
+        console.error("Erro:", message);
       });
+  }
+
+  function addProductToSale(product) {
+    const row = document.createElement("tr");
+    const quantity = 1;
+    totalItems += 1;
+    totalValue += parseFloat(product.price) * quantity; // Adiciona o valor do product.price;
+
+    row.innerHTML = `
+      <td class="item-value">${totalItems}</td>
+      <td class="name-value">${product.name}</td>
+      <td class="quantity-value">${quantity}</td>
+      <td class="price-value">R$ ${product.price}</td>
+      <td class="total-value">R$ ${(product.price * quantity).toFixed(2)}</td>
+      <td><button class="btn btn-remove-product">Remover</button></td>
+    `;
+
+    row.querySelector(".btn-remove-product").addEventListener("click", () => {
+      removeProductFromSale(row);
+      totalItems -= 1;
+      updateOrderNumbers();
+      updateTotalItems();
+      updateTotalValue();
+    });
+
+    displayTotalItems.innerHTML = `<h4>Total de Itens: </br> ${totalItems}</h4>`;
+    displayTotalPrice.innerHTML = `<h4>Valor Total: </br> R$ ${totalValue} </h4>`;
+    productsSaleList.appendChild(row);
+    searchItem.value = "";
+  }
+
+  function removeProductFromSale(row) {
+    row.parentNode.removeChild(row);
+  }
+   
+  function updateOrderNumbers() {
+    const rows = productsSaleList.querySelectorAll("tr");
+    rows.forEach((row, index) => {
+      row.querySelector("td").textContent = index + 1;
+    });
+  }
+
+
+  function updateTotalItems() {
+    const rows = productsSaleList.querySelectorAll("tr");
+    totalItems = rows.length;
+    displayTotalItems.innerHTML = `<h4>Total de Itens: </br> ${totalItems}</h4>`;
+  }
+
+  function updateTotalValue() {
+    const rows = productsSaleList.querySelectorAll("tr");
+    totalValue = 0;
+    rows.forEach((row) => {
+      totalValue += parseFloat(row.querySelector(".total-value").textContent.replace("R$", ""));
+    });
+    displayTotalPrice.innerHTML = `<h4>Valor Total: </br> R$ ${totalValue} </h4>`;
   }
 });
