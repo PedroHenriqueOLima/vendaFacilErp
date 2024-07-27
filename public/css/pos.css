@@ -256,9 +256,9 @@
   background-color: #f2c94c;
   border: 0.5px solid #f2c94c;
   border-radius: 5px;
-  margin: 8px 0;
+  margin: 5px 0;
   color: #fff;
-  padding: 20px 10px;
+  padding: 23px 10px;
   font-size: 18px;
   font-weight: 700;
 }
@@ -275,6 +275,16 @@
   border: 0.5px solid #fff;
 }
 
+.quantity-value input {
+  width: 50px;
+  height: 24px;
+  border-radius: 5px;
+  border: 0.5px solid #f2c94c;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+}
 #right-container {
   width: 100%;
   display: flex;
