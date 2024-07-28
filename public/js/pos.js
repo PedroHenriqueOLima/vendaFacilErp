@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log("produto encontrado:", response);
           addItemsToModal(response.data);
         } else {
-          alert('Não há nenhum item com essa descrição. Tente novamente.');
+          alert("Não há nenhum item com essa descrição. Tente novamente.");
           searchItem.value = "";
         }
       })
@@ -203,8 +203,8 @@ document.addEventListener("DOMContentLoaded", function () {
     row.innerHTML = `
       <td class="item-value">${totalItems}</td>
       <td class="name-value">${product.name}</td>
-      <td class="quantity-value"><input  id="quantity" type="number" min="1" value="${quantity}"/></td>
-      <td class="price-value">R$ ${product.price}</td>
+      <td class="quantity-value"><input type="number" min="1" value="${quantity}"/></td>
+      <td class="price-value"><input type="number" min="0.01" step="0.01" value="${product.price}"/>R$</td>
       <td class="total-value">R$ ${(product.price * quantity).toFixed(2)}</td>
       <td><button class="btn btn-remove-product">Remover</button></td>
     `;
@@ -217,34 +217,19 @@ document.addEventListener("DOMContentLoaded", function () {
       updateTotalValue();
     });
 
-    row.querySelector(".quantity-value input").addEventListener("change", (event) => {
-      const afterQuantity = event.target.value;
-      const quantity = parseInt(afterQuantity);
-      const price = parseFloat(row.querySelector(".price-value").textContent.replace("R$", ""));
-      const total = quantity * price;
-      row.querySelector(".total-value").textContent = `R$ ${total.toFixed(2)}`;
+    row.querySelector(".price-value input").addEventListener("change", () => {
+      const price = row.querySelector(".price-value input").value;
+      row.querySelector(".total-value").textContent = `R$ ${(price * quantity)}`;
+      updateTotalValue();
+    })
 
-      if (quantity < afterQuantity) {
-        totalItems -= event.target.value;
-        totalValue += price * (event.target.value - quantity);
-        updateOrderNumbers();
-        updateTotalItems();
-        updateTotalValue();
-      } else if (quantity > afterQuantity) {
-        totalItems += event.target.value;
-        totalValue += price * (event.target.value - quantity);
-        updateOrderNumbers();
-        updateTotalItems();
-        updateTotalValue();
-      } else {
-        console.log("A quantidade não foi alterada");
-      }
-      totalItems += event.target.value - quantity;
-      totalValue += price * (event.target.value - quantity);
-      updateOrderNumbers();
-      updateTotalItems(); 
+    row.querySelector(".quantity-value input").addEventListener("change", () => {
+      const quantity = row.querySelector(".quantity-value input").value;
+      row.querySelector(".total-value").textContent = `R$ ${(product.price * quantity)}`;
       updateTotalValue();
     });
+
+
 
     displayTotalItems.innerHTML = `<h4>Total de Itens: </br> ${totalItems}</h4>`;
     displayTotalPrice.innerHTML = `<h4>Valor Total: </br> R$ ${totalValue} </h4>`;
