@@ -1,68 +1,114 @@
-# CodeIgniter 4 Application Starter
+# VendaFacilErp
 
-## What is CodeIgniter?
+VendaFacilErp é um sistema de gestão desenvolvido em PHP utilizando o framework CodeIgniter. Ele também faz uso de HTML, CSS e JavaScript para a interface do usuário e MySQL como banco de dados. O sistema é projetado para ser hospedado em um servidor Windows utilizando o XAMPP.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Sumário
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+1. [Requisitos](#requisitos)
+2. [Instalação do XAMPP](#instalação-do-xampp)
+3. [Configuração do Banco de Dados](#configuração-do-banco-de-dados)
+4. [Instalação do Sistema VendaFacilErp](#instalação-do-sistema-vendafacilerp)
+5. [Configuração do CodeIgniter](#configuração-do-codeigniter)
+6. [Iniciar o Servidor](#iniciar-o-servidor)
+7. [Acesso ao Sistema](#acesso-ao-sistema)
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Requisitos
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+- Windows OS
+- XAMPP (versão mais recente recomendada)
+- Navegador web moderno (Google Chrome, Firefox, etc.)
 
-## Installation & updates
+## Instalação do XAMPP
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+1. **Baixar o XAMPP:**
+   - Acesse o site oficial do XAMPP: [XAMPP Download](https://www.apachefriends.org/index.html)
+   - Baixe a versão mais recente do XAMPP para Windows.
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+2. **Instalar o XAMPP:**
+   - Execute o instalador baixado e siga as instruções na tela.
+   - Selecione os componentes necessários (Apache, MySQL, PHPMyAdmin, etc.).
+   - Conclua a instalação e inicie o XAMPP Control Panel.
 
-## Setup
+3. **Iniciar os serviços Apache e MySQL:**
+   - No XAMPP Control Panel, clique em "Start" para Apache e MySQL.
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+## Configuração do Banco de Dados
 
-## Important Change with index.php
+1. **Acessar o PHPMyAdmin:**
+   - Abra o navegador web e vá para [http://localhost/phpmyadmin](http://localhost/phpmyadmin).
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+2. **Criar um banco de dados:**
+   - Clique em "New" no menu à esquerda.
+   - Nomeie o banco de dados como `vendafacil_db` e clique em "Create".
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+## Instalação do Sistema VendaFacilErp
 
-**Please** read the user guide for a better explanation of how CI4 works!
+1. **Baixar o VendaFacilErp:**
+   - Faça o download do código-fonte do VendaFacilErp do repositório GitHub: [VendaFacilErp GitHub](https://github.com/username/vendafacilerp)
 
-## Repository Management
+2. **Extrair os arquivos:**
+   - Extraia o conteúdo do arquivo baixado para a pasta `htdocs` do XAMPP. Por padrão, o caminho é `C:\xampp\htdocs\`.
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+3. **Configuração do CodeIgniter:**
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+## Configuração do CodeIgniter
 
-## Server Requirements
+1. **Configurar o arquivo `config.php`:**
+   - Navegue até a pasta `application/config` dentro da pasta do VendaFacilErp.
+   - Abra o arquivo `config.php` em um editor de texto.
+   - Configure a base URL:
+     ```php
+     $config['base_url'] = 'http://localhost/vendafacilerp/';
+     ```
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+2. **Configurar o banco de dados:**
+   - Abra o arquivo `database.php` na pasta `application/config`.
+   - Configure as informações de conexão com o banco de dados:
+     ```php
+     $db['default'] = array(
+         'dsn'   => '',
+         'hostname' => 'localhost',
+         'username' => 'root',
+         'password' => '',
+         'database' => 'vendafacil_db',
+         'dbdriver' => 'mysqli',
+         'dbprefix' => '',
+         'pconnect' => FALSE,
+         'db_debug' => (ENVIRONMENT !== 'production'),
+         'cache_on' => FALSE,
+         'cachedir' => '',
+         'char_set' => 'utf8',
+         'dbcollat' => 'utf8_general_ci',
+         'swap_pre' => '',
+         'encrypt' => FALSE,
+         'compress' => FALSE,
+         'stricton' => FALSE,
+         'failover' => array(),
+         'save_queries' => TRUE
+     );
+     ```
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+## Iniciar o Servidor
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
+1. **Iniciar o servidor Apache:**
+   - No XAMPP Control Panel, certifique-se de que o Apache está em execução.
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+2. **Acessar o sistema:**
+   - Abra o navegador web e vá para [http://localhost/vendafacilerp](http://localhost/vendafacilerp).
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+## Acesso ao Sistema
+
+- **Tela de Login:**
+  - Acesse o sistema utilizando as credenciais padrão (admin/admin). É recomendado alterar essas credenciais após o primeiro login.
+
+## Contribuições
+
+Contribuições são bem-vindas! Por favor, faça um fork do repositório e envie um pull request com suas melhorias.
+
+## Licença
+
+Este projeto está licenciado sob a MIT License. Veja o arquivo `LICENSE` para mais detalhes.
+
+---
+
+Desenvolvido por Pedro Henrique.
